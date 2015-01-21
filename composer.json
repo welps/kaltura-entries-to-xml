@@ -1,0 +1,20 @@
+{
+    "name": "wcheng/kaltura-entries-to-xml",
+    "description": "Download media entries from Kaltura service to XML so you can make a bulk update and import it back into the service.",
+    "authors": [
+        {
+            "name": "Wayne Cheng",
+            "email": "waynethecheng@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "wcheng\\KalturaEntriesToXML\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "kaltura/api-client-library": "dev-master"
+    }
+}
