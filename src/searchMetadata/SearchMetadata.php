@@ -126,12 +126,3 @@ class SearchMetadata
         return (object) array("objects" => array_merge((array) $firstSet->objects, (array) $secondSet->objects));
     }
 };
-
-include 'Kaltura2XML.php';
-$newSearch = new SearchMetadata();
-$results = $newSearch->getEntriesByName('Wildlife');
-print_r($results);
-
-$kaltura = new Kaltura2XML();
-echo $kalturaFileOutput = $kaltura->convert2XML($results);
-// $kalturaNumEntries = $kaltura->getNumEntries();
