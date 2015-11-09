@@ -1,8 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
-
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class Kaltura2XML
 {
@@ -122,7 +120,7 @@ class Kaltura2XML
     // Uses category service to return categories array if it exists
     private function getCategoryName($mediaId)
     {
-        $filter = new KalturaCategoryEntryFilter();
+        $filter = $this->kalturaServiceFactory->getKalturaCategoryEntryFilter();
         $filter->entryIdEqual = $mediaId;
         $pager = null;
 
