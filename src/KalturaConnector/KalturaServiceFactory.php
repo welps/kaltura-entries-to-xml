@@ -8,8 +8,8 @@ define('CONFIG_FILE', 'config.ini');
 use \Kaltura\Client\Client as KalturaClient;
 use \Kaltura\Client\Configuration as KalturaConfiguration;
 use \Kaltura\Client\Enum\SessionType as KalturaSessionType;
+use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
-
 
 class KalturaServiceFactory {
 	private $kalturaConfig;
@@ -38,6 +38,10 @@ class KalturaServiceFactory {
 		return new KalturaConfiguration();
 	}
 
+	public function getKalturaMetadataService(){
+		return new KalturaMetadataService($this->kalturaClient);
+	}
+	
 	public function getKalturaMetadataProfileService(){
 		return new KalturaMetadataProfileService($this->kalturaClient);
 	}

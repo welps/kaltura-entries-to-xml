@@ -1,13 +1,13 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetaDataFilter;
 use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
 
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class Kaltura2XML
 {
+    protected $kalturaServiceFactory;
     private $mClient;
     private $mNumEntries = 0;
 
@@ -19,8 +19,8 @@ class Kaltura2XML
     // Initiate connection with Kaltura
     private function getConnection()
     {
-        $this->mClient = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
-        $this->mClient = $this->mClient->getKalturaClient();
+        $this->kalturaServiceFactory = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+        $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
     // Returns number of entries processed into XML
@@ -106,7 +106,7 @@ class Kaltura2XML
         $metadataFilter->objectIdEqual = $mediaId;
         $metadataPager = null;
 
-        $metadataService = new KalturaMetadataService($this->mClient);
+        $metadataService = $this->kalturaServiceFactory->getKalturaMetadataService();
         $metadataResults = $metadataService->listAction($metadataFilter, $metadataPager);
 
         if (count($metadataResults->objects) <= 0) {
