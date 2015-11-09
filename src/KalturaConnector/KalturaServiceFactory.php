@@ -11,6 +11,7 @@ use \Kaltura\Client\Enum\SessionType as KalturaSessionType;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
 
+use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetadataFilter;
 
@@ -49,10 +50,14 @@ class KalturaServiceFactory {
 		return new KalturaMetadataProfileService($this->kalturaClient);
 	}
 
+	public function getKalturaFilterPager(){
+		return new KalturaFilterPager();
+	}
+	
 	public function getKalturaCategoryEntryFilter(){
 		return new KalturaCategoryEntryFilter();
 	}
-	
+
 	public function getKalturaMetadataFilter(){
 		return new KalturaMetadataFilter();
 	}

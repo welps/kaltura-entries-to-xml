@@ -1,7 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Enum\SearchOperatorType as KalturaSearchOperatorType;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
@@ -12,6 +11,7 @@ use \Kaltura\Client\Plugin\Metadata\Type\MetadataSearchItem as KalturaMetadataSe
 class SearchMetadata
 {
     private $mClient;
+    protected $kalturaServiceFactory;
  
     public function __construct()
     {
@@ -20,8 +20,8 @@ class SearchMetadata
     // Initiate connection with Kaltura
     private function getConnection()
     {
-        $this->mClient = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
-        $this->mClient = $this->mClient->getKalturaClient();
+        $this->kalturaServiceFactory = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+        $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
     // Grabs entries by entry name
@@ -30,7 +30,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = new KalturaFilterPager();
+            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
@@ -48,7 +48,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = new KalturaFilterPager();
+            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
@@ -66,7 +66,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = new KalturaFilterPager();
+            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
@@ -84,7 +84,7 @@ class SearchMetadata
         if (ctype_space($searchTerm) || ctype_space($searchCategory)) {
             return null;
         } else {
-            $pager = new KalturaFilterPager();
+            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
