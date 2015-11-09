@@ -1,5 +1,5 @@
 <?php
-require_once '../KalturaConnector/KalturaConnector.php';
+require_once '../KalturaConnector/KalturaServiceFactory.php';
 
 use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
@@ -18,8 +18,8 @@ class SearchMetadata
     // Initiate connection with Kaltura
     private function getConnection()
     {
-        $this->mClient = new KalturaConnector();
-        $this->mClient = $this->mClient->startKalturaConnection();
+        $this->mClient = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+        $this->mClient = $this->mClient->getKalturaClient();
     }
 
     // Grabs entries by entry name

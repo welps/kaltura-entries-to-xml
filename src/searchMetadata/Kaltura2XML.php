@@ -1,5 +1,5 @@
 <?php
-require_once '../KalturaConnector/KalturaConnector.php';
+require_once '../KalturaConnector/KalturaServiceFactory.php';
 
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetaDataFilter;
@@ -19,8 +19,8 @@ class Kaltura2XML
     // Initiate connection with Kaltura
     private function getConnection()
     {
-        $this->mClient = new KalturaConnector();
-        $this->mClient = $this->mClient->startKalturaConnection();
+        $this->mClient = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+        $this->mClient = $this->mClient->getKalturaClient();
     }
 
     // Returns number of entries processed into XML

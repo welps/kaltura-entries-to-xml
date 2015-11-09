@@ -1,10 +1,10 @@
 <?php
 // Grab metadata fields for display
-require_once '../KalturaConnector/KalturaConnector.php';
+require_once '../KalturaConnector/KalturaServiceFactory.php';
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
 
-$client = new KalturaConnector();
-$client = $client->startKalturaConnection();
+$client = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+$client = $client->getKalturaClient();
 $metadataFields = array();
 $metadataProfileService = new KalturaMetadataProfileService($client);
 
