@@ -1,7 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetaDataFilter;
 use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
 
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
@@ -9,7 +8,7 @@ class Kaltura2XML
 {
     protected $kalturaServiceFactory;
     private $mClient;
-    private $mNumEntries = 0;
+    private $mNumEntries = 0; 
 
     public function __construct()
     {
@@ -102,7 +101,7 @@ class Kaltura2XML
     // Uses metadata service to return custom metadata if it exists
     private function getMetadataEntry($mediaId)
     {
-        $metadataFilter = new KalturaMetaDataFilter();
+        $metadataFilter = $this->kalturaServiceFactory->getKalturaMetadataFilter();
         $metadataFilter->objectIdEqual = $mediaId;
         $metadataPager = null;
 

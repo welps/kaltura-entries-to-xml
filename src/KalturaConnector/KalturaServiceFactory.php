@@ -10,6 +10,7 @@ use \Kaltura\Client\Configuration as KalturaConfiguration;
 use \Kaltura\Client\Enum\SessionType as KalturaSessionType;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
+use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetadataFilter;
 
 class KalturaServiceFactory {
 	private $kalturaConfig;
@@ -41,8 +42,12 @@ class KalturaServiceFactory {
 	public function getKalturaMetadataService(){
 		return new KalturaMetadataService($this->kalturaClient);
 	}
-	
+
 	public function getKalturaMetadataProfileService(){
 		return new KalturaMetadataProfileService($this->kalturaClient);
+	}
+
+	public function getKalturaMetadataFilter(){
+		return new KalturaMetadataFilter();
 	}
 }
