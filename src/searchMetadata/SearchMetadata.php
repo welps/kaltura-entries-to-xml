@@ -1,5 +1,4 @@
 <?php
-require_once '../ServiceFactory/KalturaServiceFactory.php';
 
 // Provides search options and retrieves results from Kaltura
 // Results can be passed to Kaltura2XML for an export
@@ -9,14 +8,9 @@ class SearchMetadata
     private $mClient;
     protected $kalturaServiceFactory;
 
-    public function __construct()
+    public function __construct(wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
     {
-        $this->getConnection();
-    }
-    // Initiate connection with Kaltura
-    private function getConnection()
-    {
-        $this->kalturaServiceFactory = new wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory();
+        $this->kalturaServiceFactory = $kalturaServiceFactory;
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
