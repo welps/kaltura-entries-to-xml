@@ -1,7 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Plugin\Metadata\Type\MetadataSearchItem as KalturaMetadataSearchItem;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
 
@@ -89,7 +88,7 @@ class SearchMetadata
             $pager->pageSize = 500;
 
             $filter = new KalturaMediaEntryFilter();
-            $filterAdvancedSearch = new KalturaMetadataSearchItem();
+            $filterAdvancedSearch = $this->kalturaServiceFactory->getKalturaMetadataSearchItem();
 
             $kalturaSearchOperatorType = $this->kalturaServiceFactory->getKalturaSearchOperatorType();
             $filterAdvancedSearch->type = $kalturaSearchOperatorType::SEARCH_OR;
