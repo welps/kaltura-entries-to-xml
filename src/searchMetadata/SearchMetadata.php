@@ -1,7 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
 
 // Provides search options and retrieves results from Kaltura
@@ -33,7 +32,7 @@ class SearchMetadata
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
-            $filter = new KalturaMediaEntryFilter();
+            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->nameLike = $searchTerm;
 
             return $this->getSearchResults($filter, $pager);
@@ -51,7 +50,7 @@ class SearchMetadata
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
-            $filter = new KalturaMediaEntryFilter();
+            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->categoryAncestorIdIn = $searchTerm;
 
             return $this->getSearchResults($filter, $pager);
@@ -69,7 +68,7 @@ class SearchMetadata
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
-            $filter = new KalturaMediaEntryFilter();
+            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->tagsLike = $searchTerm;
 
             return $this->getSearchResults($filter, $pager);
@@ -87,7 +86,7 @@ class SearchMetadata
             $pager->pageIndex = 1;
             $pager->pageSize = 500;
 
-            $filter = new KalturaMediaEntryFilter();
+            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filterAdvancedSearch = $this->kalturaServiceFactory->getKalturaMetadataSearchItem();
 
             $kalturaSearchOperatorType = $this->kalturaServiceFactory->getKalturaSearchOperatorType();

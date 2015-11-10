@@ -15,6 +15,7 @@ use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetadataFilter
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataSearchItem as KalturaMetadataSearchItem;
 use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
 use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
+use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 
 class KalturaServiceFactory
 {
@@ -65,6 +66,11 @@ class KalturaServiceFactory
     public function getKalturaCategoryEntryFilter()
     {
         return new KalturaCategoryEntryFilter();
+    }
+
+    public function getKalturaMediaEntryFilter()
+    {
+        return new KalturaMediaEntryFilter();
     }
 
     public function getKalturaMetadataSearchItem()
