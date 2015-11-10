@@ -8,27 +8,29 @@ define('CONFIG_FILE', 'config.ini');
 use \Kaltura\Client\Client as KalturaClient;
 use \Kaltura\Client\Configuration as KalturaConfiguration;
 use \Kaltura\Client\Enum\SessionType as KalturaSessionType;
-use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
-
-use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
-use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
+use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataFilter as KalturaMetadataFilter;
+use \Kaltura\Client\Type\CategoryEntryFilter as KalturaCategoryEntryFilter;
+use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 
-class KalturaServiceFactory {
-	private $kalturaConfig;
-	private $isAdmin = true;
-	private $kalturaClient;
-	
-	public function __construct(){
-		$this->kalturaConfig = parse_ini_file(dirname(__FILE__) . '/../../' . CONFIG_FILE);
-	}	
+class KalturaServiceFactory
+{
+    private $kalturaConfig;
+    private $isAdmin = true;
+    private $kalturaClient;
 
-	public function getKalturaClient(){
-		$kalturaConfiguration = $this->getKalturaConfiguration();
-		$kalturaConfiguration->setServiceUrl($this->kalturaConfig['serviceUrl']);
+    public function __construct()
+    {
+        $this->kalturaConfig = parse_ini_file(dirname(__FILE__) . '/../../' . CONFIG_FILE);
+    }
+
+    public function getKalturaClient()
+    {
+        $kalturaConfiguration = $this->getKalturaConfiguration();
+        $kalturaConfiguration->setServiceUrl($this->kalturaConfig['serviceUrl']);
         $kalturaConfiguration->setCurlTimeout(120);
-        
+
         $this->kalturaClient = new KalturaClient($kalturaConfiguration);
         $sessionType = ($this->isAdmin) ? KalturaSessionType::ADMIN : KalturaSessionType::USER;
 
@@ -36,29 +38,35 @@ class KalturaServiceFactory {
         $this->kalturaClient->setKs($ks);
 
         return $this->kalturaClient;
-	}
+    }
 
-	public function getKalturaConfiguration(){
-		return new KalturaConfiguration();
-	}
+    public function getKalturaConfiguration()
+    {
+        return new KalturaConfiguration();
+    }
 
-	public function getKalturaMetadataService(){
-		return new KalturaMetadataService($this->kalturaClient);
-	}
+    public function getKalturaMetadataService()
+    {
+        return new KalturaMetadataService($this->kalturaClient);
+    }
 
-	public function getKalturaMetadataProfileService(){
-		return new KalturaMetadataProfileService($this->kalturaClient);
-	}
+    public function getKalturaMetadataProfileService()
+    {
+        return new KalturaMetadataProfileService($this->kalturaClient);
+    }
 
-	public function getKalturaFilterPager(){
-		return new KalturaFilterPager();
-	}
-	
-	public function getKalturaCategoryEntryFilter(){
-		return new KalturaCategoryEntryFilter();
-	}
+    public function getKalturaFilterPager()
+    {
+        return new KalturaFilterPager();
+    }
 
-	public function getKalturaMetadataFilter(){
-		return new KalturaMetadataFilter();
-	}
+    public function getKalturaCategoryEntryFilter()
+    {
+        return new KalturaCategoryEntryFilter();
+    }
+
+    public function getKalturaMetadataFilter()
+    {
+        return new KalturaMetadataFilter();
+    }
 }

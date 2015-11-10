@@ -6,7 +6,7 @@ class Kaltura2XML
 {
     protected $kalturaServiceFactory;
     private $mClient;
-    private $mNumEntries = 0; 
+    private $mNumEntries = 0;
 
     public function __construct()
     {

@@ -1,10 +1,11 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Enum\SearchOperatorType as KalturaSearchOperatorType;
-use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataSearchItem as KalturaMetadataSearchItem;
+use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
+use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
+
 // Provides search options and retrieves results from Kaltura
 // Results can be passed to Kaltura2XML for an export
 
@@ -12,7 +13,7 @@ class SearchMetadata
 {
     private $mClient;
     protected $kalturaServiceFactory;
- 
+
     public function __construct()
     {
         $this->getConnection();
