@@ -1,5 +1,5 @@
 <?php
-namespace wcheng\KalturaEntriesToXML\Kaltura;
+namespace wcheng\KalturaEntriesToXML\ServiceFactory;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -18,7 +18,7 @@ use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
 
-class KalturaServiceFactory
+class KalturaServiceFactory implements ServiceFactory
 {
     private $kalturaConfig;
     private $isAdmin = true;

@@ -1,5 +1,5 @@
 <?php
-require_once '../KalturaConnector/KalturaServiceFactory.php';
+require_once '../ServiceFactory/KalturaServiceFactory.php';
 
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class Kaltura2XML
@@ -16,7 +16,7 @@ class Kaltura2XML
     // Initiate connection with Kaltura
     private function getConnection()
     {
-        $this->kalturaServiceFactory = new wcheng\KalturaEntriesToXML\Kaltura\KalturaServiceFactory();
+        $this->kalturaServiceFactory = new wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory();
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
