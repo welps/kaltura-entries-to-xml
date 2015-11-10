@@ -1,7 +1,6 @@
 <?php
 require_once '../KalturaConnector/KalturaServiceFactory.php';
 
-use \Kaltura\Client\Enum\SearchOperatorType as KalturaSearchOperatorType;
 use \Kaltura\Client\Plugin\Metadata\Type\MetadataSearchItem as KalturaMetadataSearchItem;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
@@ -91,7 +90,9 @@ class SearchMetadata
 
             $filter = new KalturaMediaEntryFilter();
             $filterAdvancedSearch = new KalturaMetadataSearchItem();
-            $filterAdvancedSearch->type = KalturaSearchOperatorType::SEARCH_OR;
+
+            $kalturaSearchOperatorType = $this->kalturaServiceFactory->getKalturaSearchOperatorType();
+            $filterAdvancedSearch->type = $kalturaSearchOperatorType::SEARCH_OR;
             $filterAdvancedSearch->metadataProfileId = $metadataProfileId; // Obtained by calling metadataProfile service and getting the profile ID
             $filterAdvancedSearchItems = new KalturaSearchCondition();
             $filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='" . $searchCategory . "']"; // Replace FieldName with the name obtained by calling metadataProfile service and showing defined fields

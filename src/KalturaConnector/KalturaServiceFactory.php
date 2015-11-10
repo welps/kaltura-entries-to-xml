@@ -7,6 +7,7 @@ define('CONFIG_FILE', 'config.ini');
 
 use \Kaltura\Client\Client as KalturaClient;
 use \Kaltura\Client\Configuration as KalturaConfiguration;
+use \Kaltura\Client\Enum\SearchOperatorType as KalturaSearchOperatorType;
 use \Kaltura\Client\Enum\SessionType as KalturaSessionType;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataProfileService as KalturaMetadataProfileService;
 use \Kaltura\Client\Plugin\Metadata\Service\MetadataService as KalturaMetadataService;
@@ -68,5 +69,10 @@ class KalturaServiceFactory
     public function getKalturaMetadataFilter()
     {
         return new KalturaMetadataFilter();
+    }
+
+    public function getKalturaSearchOperatorType()
+    {
+        return new KalturaSearchOperatorType();
     }
 }
