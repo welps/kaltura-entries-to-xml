@@ -8,12 +8,15 @@ class KalturaXML
     protected $kalturaServiceFactory;
     private $mClient;
     private $xmlFile;
+    private $metadataProfileId;
     private $mNumEntries = 0;
 
-    public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
+    public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory, $metadataProfileId)
     {
         $this->kalturaServiceFactory = $kalturaServiceFactory;
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
+
+        $this->metadataProfileId = $metadataProfileId;
     }
 
     public function getNumEntries()
@@ -60,7 +63,7 @@ class KalturaXML
 
         // Metadata isn't stored within the entry so we'll have to defer to another service
         $this->xmlFile .= $this->openTag('customDataItems');
-        $this->xmlFile .= $this->openTag('customData metadataProfileId="27091"');
+        $this->xmlFile .= $this->openTag('customData metadataProfileId="' . $this->metadataProfileId . '"');
         $metadata = $this->getMetadataEntry($entry->id);
         $this->xmlFile .= $this->createElement('xmlData', $metadata);
         $this->xmlFile .= $this->closeTag('customData');
