@@ -1,7 +1,7 @@
 <?php
 
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
-class Kaltura2XML
+class KalturaXML
 {
     protected $kalturaServiceFactory;
     private $mClient;

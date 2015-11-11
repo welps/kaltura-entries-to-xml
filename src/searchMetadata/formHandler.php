@@ -1,6 +1,6 @@
 <?php
 include '../Entries/KalturaEntries.php';
-include 'Kaltura2XML.php';
+include '../XML/KalturaXML.php';
 include '../ServiceFactory/KalturaServiceFactory.php';
 
 $kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory;
@@ -51,7 +51,7 @@ if (empty($_POST['select-metadata'])) {
 
 // If search returns results data, proceed with XML export
 if (!empty($results)) {
-    $kaltura = new Kaltura2XML($kalturaServiceFactory);
+    $kaltura = new KalturaXML($kalturaServiceFactory);
     $kalturaFileOutput = $kaltura->convert2XML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 
