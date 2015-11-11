@@ -1,7 +1,6 @@
 <?php
 
 // Provides search options and retrieves results from Kaltura
-// Results can be passed to Kaltura2XML for an export
 
 class SearchMetadata
 {
@@ -14,7 +13,6 @@ class SearchMetadata
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
-    // Grabs entries by entry name
     public function getEntriesByName($searchTerm)
     {
         if (ctype_space($searchTerm)) {
@@ -28,7 +26,7 @@ class SearchMetadata
 
     }
 
-    // Grabs entries by category using categoryID, this search will include all sub-categories of the specified category
+    // this search will include all sub-categories of the specified category
     public function getEntriesByCategory($searchTerm)
     {
         if (ctype_space($searchTerm)) {
@@ -42,7 +40,6 @@ class SearchMetadata
 
     }
 
-    // Grabs entries by tags using tagsLike property
     public function getEntriesByTags($searchTerm)
     {
         if (ctype_space($searchTerm)) {
@@ -56,7 +53,6 @@ class SearchMetadata
 
     }
 
-    // Grabs entries by metadata category, needs the category to match (use Metadata profile service to grab categories), and the profile ID
     public function getEntriesByMetadataCategory($searchTerm, $searchCategory, $metadataProfileId)
     {
         if (ctype_space($searchTerm) || ctype_space($searchCategory)) {
@@ -64,17 +60,19 @@ class SearchMetadata
         } else {
             $pager = $this->setFilterPager(1, 500);
 
-            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filterAdvancedSearch = $this->kalturaServiceFactory->getKalturaMetadataSearchItem();
-
             $kalturaSearchOperatorType = $this->kalturaServiceFactory->getKalturaSearchOperatorType();
+
             $filterAdvancedSearch->type = $kalturaSearchOperatorType::SEARCH_OR;
-            $filterAdvancedSearch->metadataProfileId = $metadataProfileId; // Obtained by calling metadataProfile service and getting the profile ID
+            $filterAdvancedSearch->metadataProfileId = $metadataProfileId;
+
             $filterAdvancedSearchItems = $this->kalturaServiceFactory->getKalturaSearchCondition();
-            $filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='" . $searchCategory . "']"; // Replace FieldName with the name obtained by calling metadataProfile service and showing defined fields
+            $filterAdvancedSearchItems->field = "/*[local-name()='metadata']/*[local-name()='" . $searchCategory . "']";
             $filterAdvancedSearchItems->value = $searchTerm;
+
             $filterAdvancedSearch->items = array($filterAdvancedSearchItems);
-            $filter->advancedSearch = $filterAdvancedSearch;
+
+            $filter = $this->setMediaEntryFilter('advancedSearch', $filterAdvancedSearch);
 
             return $this->getSearchResults($filter, $pager);
         }
@@ -83,17 +81,17 @@ class SearchMetadata
     public function getSearchResults($filter, $pager)
     {
         $results = $this->mClient->getMediaService()->listAction($filter, $pager);
-        $isMoreResults = true;
+        $hasMoreResults = true;
 
         // Since we can only receive 500 entries per page, we'll have to loop through and merge these results
-        while ($isMoreResults == true) {
+        while ($hasMoreResults == true) {
             $pager->pageIndex++;
             $moreResults = $this->mClient->getMediaService()->listAction($filter, $pager);
 
             if (count($moreResults->objects) != 0) {
                 $results = $this->combineResults($results, $moreResults);
             } else {
-                $isMoreResults = false;
+                $hasMoreResults = false;
             }
         }
 
