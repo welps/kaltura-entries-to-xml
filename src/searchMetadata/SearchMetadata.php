@@ -20,9 +20,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
-            $pager->pageIndex = 1;
-            $pager->pageSize = 500;
+            $pager = $this->setFilterPager(1, 500);
 
             $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->nameLike = $searchTerm;
@@ -38,9 +36,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
-            $pager->pageIndex = 1;
-            $pager->pageSize = 500;
+            $pager = $this->setFilterPager(1, 500);
 
             $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->categoryAncestorIdIn = $searchTerm;
@@ -56,9 +52,7 @@ class SearchMetadata
         if (ctype_space($searchTerm)) {
             return null;
         } else {
-            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
-            $pager->pageIndex = 1;
-            $pager->pageSize = 500;
+            $pager = $this->setFilterPager(1, 500);
 
             $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filter->tagsLike = $searchTerm;
@@ -74,9 +68,7 @@ class SearchMetadata
         if (ctype_space($searchTerm) || ctype_space($searchCategory)) {
             return null;
         } else {
-            $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
-            $pager->pageIndex = 1;
-            $pager->pageSize = 500;
+            $pager = $this->setFilterPager(1, 500);
 
             $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
             $filterAdvancedSearch = $this->kalturaServiceFactory->getKalturaMetadataSearchItem();
@@ -102,10 +94,10 @@ class SearchMetadata
         // Since we can only receive 500 entries per page, we'll have to loop through and merge these results
         while ($isMoreResults == true) {
             $pager->pageIndex++;
-            $results2 = $this->mClient->getMediaService()->listAction($filter, $pager);
+            $moreResults = $this->mClient->getMediaService()->listAction($filter, $pager);
 
-            if (count($results2->objects) != 0) {
-                $results = $this->combineResults($results, $results2);
+            if (count($moreResults->objects) != 0) {
+                $results = $this->combineResults($results, $moreResults);
             } else {
                 $isMoreResults = false;
             }
@@ -118,5 +110,14 @@ class SearchMetadata
     private function combineResults($firstSet, $secondSet)
     {
         return (object) array("objects" => array_merge((array) $firstSet->objects, (array) $secondSet->objects));
+    }
+
+    private function setFilterPager($pageIndex, $pageSize)
+    {
+        $pager = $this->kalturaServiceFactory->getKalturaFilterPager();
+        $pager->pageIndex = $pageIndex;
+        $pager->pageSize = $pageSize;
+
+        return $pager;
     }
 };
