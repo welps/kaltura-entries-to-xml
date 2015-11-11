@@ -78,7 +78,7 @@ class SearchMetadata
         }
     }
 
-    public function getSearchResults($filter, $pager)
+    private function getSearchResults($filter, $pager)
     {
         $results = $this->mClient->getMediaService()->listAction($filter, $pager);
         $hasMoreResults = true;
