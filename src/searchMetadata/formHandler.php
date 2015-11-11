@@ -5,9 +5,6 @@ include '../ServiceFactory/KalturaServiceFactory.php';
 
 $kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory;
 
-$_POST['search-term'] = "Wildlife";
-$_POST['select-metadata'] = 'kaltura-video-name';
-
 // Data to be returned to form via ajax
 $return = array();
 $return['hasSearchTerm'] = true;
@@ -51,7 +48,7 @@ if (empty($_POST['select-metadata'])) {
 
 // If search returns results data, proceed with XML export
 if (!empty($results)) {
-    $kaltura = new KalturaXML($kalturaServiceFactory);
+    $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory);
     $kalturaFileOutput = $kaltura->convert2XML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 

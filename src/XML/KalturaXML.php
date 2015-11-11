@@ -1,5 +1,7 @@
 <?php
 
+namespace wcheng\KalturaEntriesToXML\XML;
+
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class KalturaXML
 {
@@ -136,7 +138,7 @@ class KalturaXML
     // Outputs XML to file for download
     private function populateXML($content)
     {
-        $dateForFile = new DateTime('now');
+        $dateForFile = new \DateTime('now');
         $dateForFile = $dateForFile->format('Y-m-d-H-i-s');
         $filename = 'export/kalturaexport' . $dateForFile . '.xml';
 
