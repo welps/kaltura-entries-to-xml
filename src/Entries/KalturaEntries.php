@@ -1,5 +1,7 @@
 <?php
 
+namespace wcheng\KalturaEntriesToXML\Entries;
+
 // Provides search options and retrieves results from Kaltura
 
 class KalturaEntries
