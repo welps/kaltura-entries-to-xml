@@ -49,7 +49,7 @@ if (empty($_POST['select-metadata'])) {
 // If search returns results data, proceed with XML export
 if (!empty($results)) {
     $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory);
-    $kalturaFileOutput = $kaltura->convert2XML($results);
+    $kalturaFileOutput = $kaltura->getXML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 
     $return['message'] = '<p id="match">' . $kalturaNumEntries . ' matching entries for <strong>' . $searchTerm . '</strong> in <strong>' . $searchCategory . '</strong></p>

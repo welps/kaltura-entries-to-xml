@@ -22,7 +22,7 @@ class KalturaXML
     }
 
     // Converts Kaltura results into XML
-    public function convert2XML($results)
+    public function getXML($results)
     {
         if ($results) {
             $item = '<?xml version="1.0" encoding="utf-8"?>' . "\r\n" . '<mrss xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingestion.xsd">' . "\r\n" . '<channel>' . "\r\n";
