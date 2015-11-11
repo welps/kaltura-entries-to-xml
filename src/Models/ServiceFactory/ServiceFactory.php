@@ -1,5 +1,5 @@
 <?php
-namespace wcheng\KalturaEntriesToXML\ServiceFactory;
+namespace wcheng\KalturaEntriesToXML\Models\ServiceFactory;
 
 interface ServiceFactory
 {

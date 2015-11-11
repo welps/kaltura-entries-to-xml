@@ -1,13 +1,11 @@
 <?php
-include '../Entries/KalturaEntries.php';
-include '../XML/KalturaXML.php';
-include '../ServiceFactory/KalturaServiceFactory.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 define('CONFIG_FILE', 'config.ini');
 $configLocation = dirname(__FILE__) . '/../../' . CONFIG_FILE;
 $kalturaConfig = parse_ini_file($configLocation);
 
-$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory($configLocation);
+$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\Models\ServiceFactory\KalturaServiceFactory($configLocation);
 
 // Data to be returned to form via ajax
 $return = array();
@@ -24,7 +22,7 @@ if (!empty($_POST['search-term']) && !empty($_POST['select-metadata'])) {
     }*/
 
     // Separate searches into different method calls
-    $newSearch = new \wcheng\KalturaEntriesToXML\Entries\KalturaEntries($kalturaServiceFactory);
+    $newSearch = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries($kalturaServiceFactory);
     switch ($searchCategory) {
         case "kaltura-video-name":
             $results = $newSearch->getEntriesByName($searchTerm);
@@ -51,7 +49,7 @@ if (empty($_POST['select-metadata'])) {
 }
 
 if (!empty($results)) {
-    $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory, $kalturaConfig['metadataProfileId']);
+    $kaltura = new \wcheng\KalturaEntriesToXML\Models\XML\KalturaXML($kalturaServiceFactory, $kalturaConfig['metadataProfileId']);
     $kalturaFileOutput = $kaltura->getXML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 

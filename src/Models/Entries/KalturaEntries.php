@@ -1,6 +1,5 @@
 <?php
-
-namespace wcheng\KalturaEntriesToXML\Entries;
+namespace wcheng\KalturaEntriesToXML\Models\Entries;
 
 // Provides search options and retrieves results from Kaltura
 
@@ -9,7 +8,7 @@ class KalturaEntries
     private $mClient;
     protected $kalturaServiceFactory;
 
-    public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
+    public function __construct(\wcheng\KalturaEntriesToXML\Models\ServiceFactory\ServiceFactory $kalturaServiceFactory)
     {
         $this->kalturaServiceFactory = $kalturaServiceFactory;
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();

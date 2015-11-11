@@ -1,12 +1,13 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 // Grab metadata fields for display
-require_once '../ServiceFactory/KalturaServiceFactory.php';
 
 define('CONFIG_FILE', 'config.ini');
 $configLocation = dirname(__FILE__) . '/../../' . CONFIG_FILE;
 $kalturaConfig = parse_ini_file($configLocation);
 
-$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory($configLocation);
+$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\Models\ServiceFactory\KalturaServiceFactory($configLocation);
 $client = $kalturaServiceFactory->getKalturaClient();
 $metadataFields = array();
 $metadataProfileService = $kalturaServiceFactory->getKalturaMetadataProfileService();

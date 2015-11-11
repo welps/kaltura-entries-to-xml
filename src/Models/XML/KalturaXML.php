@@ -1,6 +1,5 @@
 <?php
-
-namespace wcheng\KalturaEntriesToXML\XML;
+namespace wcheng\KalturaEntriesToXML\Models\XML;
 
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class KalturaXML
@@ -11,7 +10,7 @@ class KalturaXML
     private $metadataProfileId;
     private $mNumEntries = 0;
 
-    public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory, $metadataProfileId)
+    public function __construct(\wcheng\KalturaEntriesToXML\Models\ServiceFactory\ServiceFactory $kalturaServiceFactory, $metadataProfileId)
     {
         $this->kalturaServiceFactory = $kalturaServiceFactory;
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();

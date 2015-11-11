@@ -1,7 +1,5 @@
 <?php
-namespace wcheng\KalturaEntriesToXML\ServiceFactory;
-
-require_once __DIR__ . '/../../vendor/autoload.php';
+namespace wcheng\KalturaEntriesToXML\Models\ServiceFactory;
 
 use \Kaltura\Client\Client as KalturaClient;
 use \Kaltura\Client\Configuration as KalturaConfiguration;
