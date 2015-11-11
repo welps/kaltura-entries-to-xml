@@ -15,7 +15,6 @@ class KalturaXML
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
     }
 
-    // Returns number of entries processed into XML
     public function getNumEntries()
     {
         return $this->mNumEntries;
@@ -97,21 +96,18 @@ class KalturaXML
         return $item;
     }
 
-    // Uses category service to return categories array if it exists
     private function getCategoryName($mediaId)
     {
         $filter = $this->kalturaServiceFactory->getKalturaCategoryEntryFilter();
         $filter->entryIdEqual = $mediaId;
         $pager = null;
 
-        // Find category ids for media entry
         $categoryResults = $this->mClient->categoryEntry->listAction($filter, $pager);
 
         if (count($categoryResults->objects) <= 0) {
             return null;
         }
 
-        // Crosslist IDs against category service and return array with full category names
         foreach ($categoryResults->objects as $categoryEntries) {
             $categoryListResults = $this->mClient->category->get($categoryEntries->categoryId);
             $categoryArray[] = htmlentities($categoryListResults->fullName);
@@ -120,7 +116,6 @@ class KalturaXML
         return $categoryArray;
     }
 
-    // Uses metadata service to return custom metadata if it exists
     private function getMetadataEntry($mediaId)
     {
         $metadataFilter = $this->kalturaServiceFactory->getKalturaMetadataFilter();
@@ -137,7 +132,6 @@ class KalturaXML
         // The Kaltura api will return this with an XML declaration for only some entries, unable to discern what triggers it
         $cleanedMetadata = str_replace('<?xml version="1.0"?>', "", $metadataResults->objects[0]->xml);
 
-        // Return only XML contents for metadata for entry
         return $cleanedMetadata;
     }
 
@@ -156,7 +150,6 @@ class KalturaXML
         return '<' . $tag . '>' . $contents . '</' . $tag . ">\r\n";
     }
 
-    // Outputs XML to file for download
     private function populateXML($content)
     {
         $dateForFile = new \DateTime('now');

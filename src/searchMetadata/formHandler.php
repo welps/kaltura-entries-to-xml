@@ -46,7 +46,6 @@ if (empty($_POST['select-metadata'])) {
     $return['hasSelectMetadata'] = false;
 }
 
-// If search returns results data, proceed with XML export
 if (!empty($results)) {
     $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory);
     $kalturaFileOutput = $kaltura->getXML($results);
@@ -63,5 +62,4 @@ if (!empty($results)) {
     }
 }
 
-// Display json response for index.php
 echo json_encode($return);
