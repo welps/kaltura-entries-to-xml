@@ -3,8 +3,6 @@ namespace wcheng\KalturaEntriesToXML\ServiceFactory;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-define('CONFIG_FILE', 'config.ini');
-
 use \Kaltura\Client\Client as KalturaClient;
 use \Kaltura\Client\Configuration as KalturaConfiguration;
 use \Kaltura\Client\Enum\SearchOperatorType as KalturaSearchOperatorType;
@@ -24,9 +22,9 @@ class KalturaServiceFactory implements ServiceFactory
     private $isAdmin = true;
     private $kalturaClient;
 
-    public function __construct()
+    public function __construct($kalturaConfigLocation)
     {
-        $this->kalturaConfig = parse_ini_file(dirname(__FILE__) . '/../../' . CONFIG_FILE);
+        $this->kalturaConfig = parse_ini_file($kalturaConfigLocation);
     }
 
     public function getKalturaClient()

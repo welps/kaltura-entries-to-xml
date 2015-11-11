@@ -3,7 +3,10 @@ include '../Entries/KalturaEntries.php';
 include '../XML/KalturaXML.php';
 include '../ServiceFactory/KalturaServiceFactory.php';
 
-$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory;
+define('CONFIG_FILE', 'config.ini');
+$configLocation = dirname(__FILE__) . '/../../' . CONFIG_FILE;
+
+$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory($configLocation);
 
 // Data to be returned to form via ajax
 $return = array();
