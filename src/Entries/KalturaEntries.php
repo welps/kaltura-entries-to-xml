@@ -2,7 +2,7 @@
 
 // Provides search options and retrieves results from Kaltura
 
-class SearchMetadata
+class KalturaEntries
 {
     private $mClient;
     protected $kalturaServiceFactory;
