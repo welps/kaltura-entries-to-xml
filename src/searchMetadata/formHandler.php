@@ -5,6 +5,7 @@ include '../ServiceFactory/KalturaServiceFactory.php';
 
 define('CONFIG_FILE', 'config.ini');
 $configLocation = dirname(__FILE__) . '/../../' . CONFIG_FILE;
+$kalturaConfig = parse_ini_file($configLocation);
 
 $kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory($configLocation);
 
@@ -38,7 +39,7 @@ if (!empty($_POST['search-term']) && !empty($_POST['select-metadata'])) {
             break;
 
         default:
-            $results = $newSearch->getEntriesByMetadataCategory($searchTerm, $searchCategory, '27091');
+            $results = $newSearch->getEntriesByMetadataCategory($searchTerm, $searchCategory, $kalturaConfig['metadataProfileId']);
     }
 }
 
@@ -50,7 +51,7 @@ if (empty($_POST['select-metadata'])) {
 }
 
 if (!empty($results)) {
-    $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory, '27091');
+    $kaltura = new \wcheng\KalturaEntriesToXML\XML\KalturaXML($kalturaServiceFactory, $kalturaConfig['metadataProfileId']);
     $kalturaFileOutput = $kaltura->getXML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 
