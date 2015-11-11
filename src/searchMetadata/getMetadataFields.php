@@ -2,7 +2,7 @@
 // Grab metadata fields for display
 require_once '../ServiceFactory/KalturaServiceFactory.php';
 
-$kalturaServiceFactory = new wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory();
+$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory();
 $client = $kalturaServiceFactory->getKalturaClient();
 $metadataFields = array();
 $metadataProfileService = $kalturaServiceFactory->getKalturaMetadataProfileService();

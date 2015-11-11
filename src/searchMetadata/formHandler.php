@@ -1,9 +1,12 @@
 <?php
-include 'SearchMetadata.php';
+include '../Entries/KalturaEntries.php';
 include 'Kaltura2XML.php';
 include '../ServiceFactory/KalturaServiceFactory.php';
 
-$kalturaServiceFactory = new wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory;
+$kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\ServiceFactory\KalturaServiceFactory;
+
+$_POST['search-term'] = "Wildlife";
+$_POST['select-metadata'] = 'kaltura-video-name';
 
 // Data to be returned to form via ajax
 $return = array();
@@ -20,7 +23,7 @@ if (!empty($_POST['search-term']) && !empty($_POST['select-metadata'])) {
     }*/
 
     // Separate searches into different method calls
-    $newSearch = new SearchMetadata($kalturaServiceFactory);
+    $newSearch = new \wcheng\KalturaEntriesToXML\Entries\KalturaEntries($kalturaServiceFactory);
     switch ($searchCategory) {
         case "kaltura-video-name":
             $results = $newSearch->getEntriesByName($searchTerm);

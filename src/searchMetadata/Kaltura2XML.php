@@ -7,7 +7,7 @@ class Kaltura2XML
     private $mClient;
     private $mNumEntries = 0;
 
-    public function __construct(wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
+    public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
     {
         $this->kalturaServiceFactory = $kalturaServiceFactory;
         $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
