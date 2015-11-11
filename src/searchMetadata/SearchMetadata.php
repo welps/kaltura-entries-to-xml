@@ -21,9 +21,7 @@ class SearchMetadata
             return null;
         } else {
             $pager = $this->setFilterPager(1, 500);
-
-            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
-            $filter->nameLike = $searchTerm;
+            $filter = $this->setMediaEntryFilter('nameLike', $searchTerm);
 
             return $this->getSearchResults($filter, $pager);
         }
@@ -37,9 +35,7 @@ class SearchMetadata
             return null;
         } else {
             $pager = $this->setFilterPager(1, 500);
-
-            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
-            $filter->categoryAncestorIdIn = $searchTerm;
+            $filter = $this->setMediaEntryFilter('categoryAncestorIdIn', $searchTerm);
 
             return $this->getSearchResults($filter, $pager);
         }
@@ -53,9 +49,7 @@ class SearchMetadata
             return null;
         } else {
             $pager = $this->setFilterPager(1, 500);
-
-            $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
-            $filter->tagsLike = $searchTerm;
+            $filter = $this->setMediaEntryFilter('tagsLike', $searchTerm);
 
             return $this->getSearchResults($filter, $pager);
         }
@@ -119,5 +113,13 @@ class SearchMetadata
         $pager->pageSize = $pageSize;
 
         return $pager;
+    }
+
+    private function setMediaEntryFilter($filterCategory, $valueToSet)
+    {
+        $filter = $this->kalturaServiceFactory->getKalturaMediaEntryFilter();
+        $filter->$filterCategory = $valueToSet;
+
+        return $filter;
     }
 };
