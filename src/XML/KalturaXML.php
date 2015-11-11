@@ -7,6 +7,7 @@ class KalturaXML
 {
     protected $kalturaServiceFactory;
     private $mClient;
+    private $xmlFile;
     private $mNumEntries = 0;
 
     public function __construct(\wcheng\KalturaEntriesToXML\ServiceFactory\ServiceFactory $kalturaServiceFactory)
@@ -23,77 +24,69 @@ class KalturaXML
     public function getXML($results)
     {
         if ($results) {
-            $item = '<?xml version="1.0" encoding="utf-8"?>' . "\r\n" . '<mrss xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingestion.xsd">' . "\r\n" . '<channel>' . "\r\n";
+            $this->xmlFile = '<?xml version="1.0" encoding="utf-8"?>' . "\r\n" . '<mrss xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingestion.xsd">' . "\r\n" . '<channel>' . "\r\n";
 
             foreach ($results->objects as $entry) {
                 $this->mNumEntries++;
 
-                $item .= $this->entryToXML($entry);
+                $this->entryToXML($entry);
             }
 
-            $item .= "</channel></mrss>";
+            $this->xmlFile .= "</channel></mrss>";
 
-            return $this->populateXML($item);
+            return $this->populateXML($this->xmlFile);
         }
     }
 
     private function entryToXML($entry)
     {
-        $item = $this->openTag('item');
-        $item .= $this->createElement('action', 'update');
-        $item .= $this->createElement('entryId', $entry->id);
-        $item .= $this->createElement('userId', $entry->userId);
-        $item .= $this->createElement('name', htmlspecialchars($entry->name));
-        $item .= $this->createElement('description', htmlspecialchars($entry->description));
+        $this->xmlFile .= $this->openTag('item');
+        $this->xmlFile .= $this->createElement('action', 'update');
+        $this->xmlFile .= $this->createElement('entryId', $entry->id);
+        $this->xmlFile .= $this->createElement('userId', $entry->userId);
+        $this->xmlFile .= $this->createElement('name', htmlspecialchars($entry->name));
+        $this->xmlFile .= $this->createElement('description', htmlspecialchars($entry->description));
 
-        $item .= $this->openTag('tags');
-        $item .= $this->getEntryTags($entry->tags);
-        $item .= $this->closeTag('tags');
+        $this->xmlFile .= $this->openTag('tags');
+        $this->getEntryTags($entry->tags);
+        $this->xmlFile .= $this->closeTag('tags');
 
-        $item .= $this->openTag('categories');
-        $item .= $this->getEntryCategories($entry->id);
-        $item .= $this->closeTag('categories');
+        $this->xmlFile .= $this->openTag('categories');
+        $this->getEntryCategories($entry->id);
+        $this->xmlFile .= $this->closeTag('categories');
 
-        $item .= $this->createElement('accessControlId', $entry->accessControlId);
-        $item .= $this->createElement('conversionProfileId', $entry->conversionProfileId);
+        $this->xmlFile .= $this->createElement('accessControlId', $entry->accessControlId);
+        $this->xmlFile .= $this->createElement('conversionProfileId', $entry->conversionProfileId);
 
         // Metadata isn't stored within the entry so we'll have to defer to another service
-        $item .= $this->openTag('customDataItems');
-        $item .= $this->openTag('customData metadataProfileId="27091"');
+        $this->xmlFile .= $this->openTag('customDataItems');
+        $this->xmlFile .= $this->openTag('customData metadataProfileId="27091"');
         $metadata = $this->getMetadataEntry($entry->id);
-        $item .= $this->createElement('xmlData', $metadata);
-        $item .= $this->closeTag('customData');
-        $item .= $this->closeTag('customDataItems');
+        $this->xmlFile .= $this->createElement('xmlData', $metadata);
+        $this->xmlFile .= $this->closeTag('customData');
+        $this->xmlFile .= $this->closeTag('customDataItems');
 
-        $item .= $this->closeTag('item');
-
-        return $item;
+        $this->xmlFile .= $this->closeTag('item');
     }
 
     private function getEntryTags($tags)
     {
         $tagArray = explode(', ', $tags);
-        $item = '';
 
         foreach ($tagArray as $tag) {
-            $item .= $this->createElement('tag', htmlspecialchars($tag));
+            $this->xmlFile .= $this->createElement('tag', htmlspecialchars($tag));
         }
-
-        return $item;
     }
 
     private function getEntryCategories($entryId)
     {
         $categoryArray = $this->getCategoryName($entryId);
-        $item = '';
 
         if ($categoryArray) {
             foreach ($categoryArray as $category) {
-                $item .= $this->createElement('category', $category);
+                $this->xmlFile .= $this->createElement('category', $category);
             }
         }
-
-        return $item;
     }
 
     private function getCategoryName($mediaId)
