@@ -21,7 +21,6 @@ class KalturaXML
         return $this->mNumEntries;
     }
 
-    // Converts Kaltura results into XML
     public function getXML($results)
     {
         if ($results) {
@@ -30,44 +29,7 @@ class KalturaXML
             foreach ($results->objects as $entry) {
                 $this->mNumEntries++;
 
-                $item .= $this->openTag('item');
-                $item .= $this->createElement('action', 'update');
-                $item .= $this->createElement('entryId', $entry->id);
-                $item .= $this->createElement('userId', $entry->userId);
-                $item .= $this->createElement('name', htmlspecialchars($entry->name));
-                $item .= $this->createElement('description', htmlspecialchars($entry->description));
-
-                $item .= $this->openTag('tags');
-                // Tags are comma separated, explode and create elements
-                $tagArray = explode(', ', $entry->tags);
-                foreach ($tagArray as $tag) {
-                    $item .= $this->createElement('tag', htmlspecialchars($tag));
-                }
-                $item .= $this->closeTag('tags');
-
-                // Category data isn't stored within the entry so we'll have to defer to another service
-                $item .= $this->openTag('categories');
-                $categoryArray = $this->getCategoryName($entry->id);
-                if ($categoryArray) {
-                    foreach ($categoryArray as $category) {
-                        $item .= $this->createElement('category', $category);
-                    }
-                }
-                $item .= $this->closeTag('categories');
-
-                $item .= $this->createElement('accessControlId', $entry->accessControlId);
-                $item .= $this->createElement('conversionProfileId', $entry->conversionProfileId);
-
-                // Metadata isn't stored within the entry so we'll have to defer to another service
-                $item .= $this->openTag('customDataItems');
-                $item .= $this->openTag('customData metadataProfileId="27091"');
-                $metadata = $this->getMetadataEntry($entry->id);
-                $item .= $this->createElement('xmlData', $metadata);
-
-                $item .= $this->closeTag('customData');
-                $item .= $this->closeTag('customDataItems');
-
-                $item .= $this->closeTag('item');
+                $item .= $this->entryToXML($entry);
             }
 
             $item .= "</channel></mrss>";
@@ -76,40 +38,63 @@ class KalturaXML
         }
     }
 
-    private function openTag($tag)
+    private function entryToXML($entry)
     {
-        return '<' . $tag . ">\r\n";
+        $item = $this->openTag('item');
+        $item .= $this->createElement('action', 'update');
+        $item .= $this->createElement('entryId', $entry->id);
+        $item .= $this->createElement('userId', $entry->userId);
+        $item .= $this->createElement('name', htmlspecialchars($entry->name));
+        $item .= $this->createElement('description', htmlspecialchars($entry->description));
+
+        $item .= $this->openTag('tags');
+        $item .= $this->getEntryTags($entry->tags);
+        $item .= $this->closeTag('tags');
+
+        $item .= $this->openTag('categories');
+        $item .= $this->getEntryCategories($entry->id);
+        $item .= $this->closeTag('categories');
+
+        $item .= $this->createElement('accessControlId', $entry->accessControlId);
+        $item .= $this->createElement('conversionProfileId', $entry->conversionProfileId);
+
+        // Metadata isn't stored within the entry so we'll have to defer to another service
+        $item .= $this->openTag('customDataItems');
+        $item .= $this->openTag('customData metadataProfileId="27091"');
+        $metadata = $this->getMetadataEntry($entry->id);
+        $item .= $this->createElement('xmlData', $metadata);
+        $item .= $this->closeTag('customData');
+        $item .= $this->closeTag('customDataItems');
+
+        $item .= $this->closeTag('item');
+
+        return $item;
     }
 
-    private function closeTag($tag)
+    private function getEntryTags($tags)
     {
-        return '</' . $tag . ">\r\n";
-    }
+        $tagArray = explode(', ', $tags);
+        $item = '';
 
-    private function createElement($tag, $contents)
-    {
-        return '<' . $tag . '>' . $contents . '</' . $tag . ">\r\n";
-    }
-
-    // Uses metadata service to return custom metadata if it exists
-    private function getMetadataEntry($mediaId)
-    {
-        $metadataFilter = $this->kalturaServiceFactory->getKalturaMetadataFilter();
-        $metadataFilter->objectIdEqual = $mediaId;
-        $metadataPager = null;
-
-        $metadataService = $this->kalturaServiceFactory->getKalturaMetadataService();
-        $metadataResults = $metadataService->listAction($metadataFilter, $metadataPager);
-
-        if (count($metadataResults->objects) <= 0) {
-            return null;
+        foreach ($tagArray as $tag) {
+            $item .= $this->createElement('tag', htmlspecialchars($tag));
         }
 
-        // The Kaltura api will return this with an XML declaration for only some entries, I don't know what triggers it
-        $cleanMetadata = str_replace('<?xml version="1.0"?>', "", $metadataResults->objects[0]->xml);
+        return $item;
+    }
 
-        // Return only XML contents for metadata for entry
-        return $cleanMetadata;
+    private function getEntryCategories($entryId)
+    {
+        $categoryArray = $this->getCategoryName($entryId);
+        $item = '';
+
+        if ($categoryArray) {
+            foreach ($categoryArray as $category) {
+                $item .= $this->createElement('category', $category);
+            }
+        }
+
+        return $item;
     }
 
     // Uses category service to return categories array if it exists
@@ -133,6 +118,42 @@ class KalturaXML
         }
 
         return $categoryArray;
+    }
+
+    // Uses metadata service to return custom metadata if it exists
+    private function getMetadataEntry($mediaId)
+    {
+        $metadataFilter = $this->kalturaServiceFactory->getKalturaMetadataFilter();
+        $metadataFilter->objectIdEqual = $mediaId;
+        $metadataPager = null;
+
+        $metadataService = $this->kalturaServiceFactory->getKalturaMetadataService();
+        $metadataResults = $metadataService->listAction($metadataFilter, $metadataPager);
+
+        if (count($metadataResults->objects) <= 0) {
+            return null;
+        }
+
+        // The Kaltura api will return this with an XML declaration for only some entries, unable to discern what triggers it
+        $cleanedMetadata = str_replace('<?xml version="1.0"?>', "", $metadataResults->objects[0]->xml);
+
+        // Return only XML contents for metadata for entry
+        return $cleanedMetadata;
+    }
+
+    private function openTag($tag)
+    {
+        return '<' . $tag . ">\r\n";
+    }
+
+    private function closeTag($tag)
+    {
+        return '</' . $tag . ">\r\n";
+    }
+
+    private function createElement($tag, $contents)
+    {
+        return '<' . $tag . '>' . $contents . '</' . $tag . ">\r\n";
     }
 
     // Outputs XML to file for download
