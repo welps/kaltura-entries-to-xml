@@ -18,14 +18,14 @@ class KalturaSideEntries
         $filter->entryIdEqual = $kalturaMediaId;
         $pager = null;
 
-        $categoryResults = $this->mClient->categoryEntry->listAction($filter, $pager);
+        $categoryResults = $this->mClient->getCategoryEntryService()->listAction($filter, $pager);
 
         if (count($categoryResults->objects) <= 0) {
             return null;
         }
 
         foreach ($categoryResults->objects as $categoryEntries) {
-            $categoryListResults = $this->mClient->category->get($categoryEntries->categoryId);
+            $categoryListResults = $this->mClient->getCategoryService()->get($categoryEntries->categoryId);
             $categoryArray[] = htmlentities($categoryListResults->fullName);
         }
 
