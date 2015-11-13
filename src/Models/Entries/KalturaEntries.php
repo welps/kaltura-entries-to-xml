@@ -22,7 +22,7 @@ class KalturaEntries
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('nameLike', $searchTerm);
 
-            return $this->getSearchResults($filter, $pager);
+            return $this->getAllMatchingEntries($filter, $pager);
         }
 
     }
@@ -36,7 +36,7 @@ class KalturaEntries
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('categoryAncestorIdIn', $searchTerm);
 
-            return $this->getSearchResults($filter, $pager);
+            return $this->getAllMatchingEntries($filter, $pager);
         }
 
     }
@@ -49,7 +49,7 @@ class KalturaEntries
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('tagsLike', $searchTerm);
 
-            return $this->getSearchResults($filter, $pager);
+            return $this->getAllMatchingEntries($filter, $pager);
         }
 
     }
@@ -75,11 +75,11 @@ class KalturaEntries
 
             $filter = $this->setMediaEntryFilter('advancedSearch', $filterAdvancedSearch);
 
-            return $this->getSearchResults($filter, $pager);
+            return $this->getAllMatchingEntries($filter, $pager);
         }
     }
 
-    private function getSearchResults($filter, $pager)
+    public function getAllMatchingEntries($filter, $pager)
     {
         $results = $this->mClient->getMediaService()->listAction($filter, $pager);
         $hasMoreResults = true;
