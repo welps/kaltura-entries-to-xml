@@ -1,5 +1,4 @@
 <?php
-
 namespace wcheng\KalturaEntriesToXML\Models\Entries;
 
 class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
@@ -36,16 +35,10 @@ class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getAllMatchingEntries'))
             ->getMock();
 
-        // Real Kaltura Entries so we can test getAllMatchingEntries method
-        $this->kalturaEntries = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries($this->mockServiceFactory);
+        $this->setGetAllMatchingEntriesToReturnFilterAndPager();
 
-        // Return the filter and pager for verification instead of pushing it through Kaltura's mock service
-        $this->mockKalturaEntries->method('getAllMatchingEntries')
-            ->will($this->returnCallback(
-                function ($mockMediaEntryFilter, $mockFilterPager) {
-                    return array($mockMediaEntryFilter, $mockFilterPager);
-                }
-            ));
+        // Real Kaltura Entries so we can test getAllMatchingEntries method
+        $this->kalturaEntries = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries($this->mockServiceFactory);       
     }
 
     public function testGetEntriesByName()
@@ -195,5 +188,16 @@ class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockSearchCondition = $this->getMockBuilder('\Kaltura\Client\Type\SearchCondition')
             ->getMock();
+    }
+
+    public function setGetAllMatchingEntriesToReturnFilterAndPager()
+    {
+        // Return the filter and pager for verification instead of pushing it through Kaltura's mock service
+        $this->mockKalturaEntries->method('getAllMatchingEntries')
+            ->will($this->returnCallback(
+                function ($mockMediaEntryFilter, $mockFilterPager) {
+                    return array($mockMediaEntryFilter, $mockFilterPager);
+                }
+            ));
     }
 }
