@@ -4,18 +4,17 @@ namespace wcheng\KalturaEntriesToXML\Models\XML;
 // Takes a Kaltura search results and outputs XML file formatted for Bulk Upload digestion
 class KalturaXML
 {
-    protected $kalturaServiceFactory;
-    private $mClient;
+    protected $kalturaSideEntries;
     private $xmlFile;
     private $metadataProfileId;
+    private $xmlStorageLocation;
     private $mNumEntries = 0;
 
-    public function __construct(\wcheng\KalturaEntriesToXML\Models\ServiceFactory\ServiceFactory $kalturaServiceFactory, $metadataProfileId)
+    public function __construct(\wcheng\KalturaEntriesToXML\Models\Entries\KalturaSideEntries $kalturaSideEntries, $metadataProfileId, $xmlStorageLocation)
     {
-        $this->kalturaServiceFactory = $kalturaServiceFactory;
-        $this->mClient = $this->kalturaServiceFactory->getKalturaClient();
-
+        $this->kalturaSideEntries = $kalturaSideEntries;
         $this->metadataProfileId = $metadataProfileId;
+        $this->xmlStorageLocation = $xmlStorageLocation;
     }
 
     public function getNumEntries()
@@ -35,9 +34,9 @@ class KalturaXML
             }
 
             $this->xmlFile .= "</channel></mrss>";
-
-            return $this->populateXML($this->xmlFile);
         }
+
+        return $this->populateXML($this->xmlFile);
     }
 
     private function entryToXML($entry)
@@ -63,7 +62,7 @@ class KalturaXML
         // Metadata isn't stored within the entry so we'll have to defer to another service
         $this->xmlFile .= $this->openTag('customDataItems');
         $this->xmlFile .= $this->openTag('customData metadataProfileId="' . $this->metadataProfileId . '"');
-        $metadata = $this->getMetadataEntry($entry->id);
+        $metadata = $this->kalturaSideEntries->getMetadataForEntry($entry->id);
         $this->xmlFile .= $this->createElement('xmlData', $metadata);
         $this->xmlFile .= $this->closeTag('customData');
         $this->xmlFile .= $this->closeTag('customDataItems');
@@ -82,52 +81,13 @@ class KalturaXML
 
     private function getEntryCategories($entryId)
     {
-        $categoryArray = $this->getCategoryName($entryId);
+        $categoryArray = $this->kalturaSideEntries->getCategoriesForEntry($entryId);
 
         if ($categoryArray) {
             foreach ($categoryArray as $category) {
                 $this->xmlFile .= $this->createElement('category', $category);
             }
         }
-    }
-
-    private function getCategoryName($mediaId)
-    {
-        $filter = $this->kalturaServiceFactory->getKalturaCategoryEntryFilter();
-        $filter->entryIdEqual = $mediaId;
-        $pager = null;
-
-        $categoryResults = $this->mClient->categoryEntry->listAction($filter, $pager);
-
-        if (count($categoryResults->objects) <= 0) {
-            return null;
-        }
-
-        foreach ($categoryResults->objects as $categoryEntries) {
-            $categoryListResults = $this->mClient->category->get($categoryEntries->categoryId);
-            $categoryArray[] = htmlentities($categoryListResults->fullName);
-        }
-
-        return $categoryArray;
-    }
-
-    private function getMetadataEntry($mediaId)
-    {
-        $metadataFilter = $this->kalturaServiceFactory->getKalturaMetadataFilter();
-        $metadataFilter->objectIdEqual = $mediaId;
-        $metadataPager = null;
-
-        $metadataService = $this->kalturaServiceFactory->getKalturaMetadataService();
-        $metadataResults = $metadataService->listAction($metadataFilter, $metadataPager);
-
-        if (count($metadataResults->objects) <= 0) {
-            return null;
-        }
-
-        // The Kaltura api will return this with an XML declaration for only some entries, unable to discern what triggers it
-        $cleanedMetadata = str_replace('<?xml version="1.0"?>', "", $metadataResults->objects[0]->xml);
-
-        return $cleanedMetadata;
     }
 
     private function openTag($tag)
@@ -149,7 +109,7 @@ class KalturaXML
     {
         $dateForFile = new \DateTime('now');
         $dateForFile = $dateForFile->format('Y-m-d-H-i-s');
-        $filename = 'export/kalturaexport' . $dateForFile . '.xml';
+        $filename = $this->xmlStorageLocation . $dateForFile . uniqid() . mt_rand() . '.xml';
 
         if (!file_exists($filename)) {
             touch($filename);
