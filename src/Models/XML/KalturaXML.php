@@ -34,9 +34,9 @@ class KalturaXML
             }
 
             $this->xmlFile .= "</channel></mrss>";
-
-            return $this->populateXML($this->xmlFile);
         }
+
+        return $this->populateXML($this->xmlFile);
     }
 
     private function entryToXML($entry)
