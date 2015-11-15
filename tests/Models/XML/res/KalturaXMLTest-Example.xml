@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mrss xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ingestion.xsd">
+<channel>
+<item>
+<action>update</action>
+<entryId>2_abcdef</entryId>
+<userId>jdoe</userId>
+<name>Brooklyn</name>
+<description>Mock Description</description>
+<tags>
+<tag>oh</tag>
+<tag>no</tag>
+<tag>my</tag>
+<tag>rent</tag>
+</tags>
+<categories>
+<category>Mock Category 1 - 12345</category>
+<category>Mock Category 2 - 45678</category>
+</categories>
+<accessControlId>12345</accessControlId>
+<conversionProfileId>12345</conversionProfileId>
+<customDataItems>
+<customData metadataProfileId="12345">
+<xmlData><mockMetadata>Mock Data Item</mockMetadata></xmlData>
+</customData>
+</customDataItems>
+</item>
+<item>
+<action>update</action>
+<entryId>1_abcdefg</entryId>
+<userId>csagan</userId>
+<name>Cosmos</name>
+<description>Mock Description</description>
+<tags>
+<tag>intergalactic</tag>
+<tag>space</tag>
+<tag>aliens</tag>
+</tags>
+<categories>
+<category>Mock Category 1 - 12345</category>
+<category>Mock Category 2 - 45678</category>
+</categories>
+<accessControlId>12345</accessControlId>
+<conversionProfileId>12345</conversionProfileId>
+<customDataItems>
+<customData metadataProfileId="12345">
+<xmlData><mockMetadata>Mock Data Item</mockMetadata></xmlData>
+</customData>
+</customDataItems>
+</item>
+</channel></mrss>

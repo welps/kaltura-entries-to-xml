@@ -16,5 +16,8 @@
     "prefer-stable": true,
     "require": {
         "kaltura/api-client-library": "dev-master"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
     }
 }
