@@ -16,49 +16,38 @@ class KalturaEntries
 
     public function getEntriesByName($searchTerm)
     {
-        if (ctype_space($searchTerm)) {
-            return null;
-        } else {
+        if (!ctype_space($searchTerm)) {
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('nameLike', $searchTerm);
 
             return $this->getAllMatchingEntries($filter, $pager);
         }
-
     }
 
     // this search will include all sub-categories of the specified category
     public function getEntriesByCategory($searchTerm)
     {
-        if (ctype_space($searchTerm)) {
-            return null;
-        } else {
+        if (!ctype_space($searchTerm)) {
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('categoryAncestorIdIn', $searchTerm);
 
             return $this->getAllMatchingEntries($filter, $pager);
         }
-
     }
 
     public function getEntriesByTags($searchTerm)
     {
-        if (ctype_space($searchTerm)) {
-            return null;
-        } else {
+        if (!ctype_space($searchTerm)) {
             $pager = $this->setFilterPager(1, 500);
             $filter = $this->setMediaEntryFilter('tagsLike', $searchTerm);
 
             return $this->getAllMatchingEntries($filter, $pager);
         }
-
     }
 
     public function getEntriesByMetadataCategory($searchTerm, $searchCategory, $metadataProfileId)
     {
-        if (ctype_space($searchTerm) || ctype_space($searchCategory)) {
-            return null;
-        } else {
+        if (!ctype_space($searchTerm) && !ctype_space($searchCategory)) {
             $pager = $this->setFilterPager(1, 500);
 
             $filterAdvancedSearch = $this->kalturaServiceFactory->getKalturaMetadataSearchItem();
