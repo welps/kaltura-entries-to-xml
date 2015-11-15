@@ -34,7 +34,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
     public function testGetCategoriesForEntryArguments()
     {
         $callbackToTestArguments = function ($mockCategoryEntryFilter, $mockPager) {
-            $this->assertEquals('1_abcdefg', $mockCategoryEntryFilter->entryIdEqual);
+            $this->assertEquals($this->testEntryId, $mockCategoryEntryFilter->entryIdEqual);
             $this->assertNull($mockPager);
 
             return $this->getEmptyResultsObject();
@@ -42,7 +42,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
 
         $this->setMockCategoryEntryServiceMethodsWithCallback($callbackToTestArguments);
 
-        $this->kalturaSideEntries->getCategoriesForEntry('1_abcdefg');
+        $this->kalturaSideEntries->getCategoriesForEntry($this->testEntryId);
     }
 
     public function testGetCategoriesForEntryResults()
@@ -59,7 +59,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
 
         $this->setMockCategoryServiceMethodsWithCallback($callbackToReturnMockFullCategoryNames);
 
-        $testMockCategoryArray = $this->kalturaSideEntries->getCategoriesForEntry('1_abcdefg');
+        $testMockCategoryArray = $this->kalturaSideEntries->getCategoriesForEntry($this->testEntryId);
 
         $this->assertEquals("Mock Category - 12345", $testMockCategoryArray[0]);
         $this->assertEquals("Mock Category - 67890", $testMockCategoryArray[1]);
@@ -68,7 +68,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
     public function testGetMetadataForEntryArguments()
     {
         $callbackToTestArguments = function ($mockMetadataFilter, $mockPager) {
-            $this->assertEquals('1_abcdefg', $mockMetadataFilter->objectIdEqual);
+            $this->assertEquals($this->testEntryId, $mockMetadataFilter->objectIdEqual);
             $this->assertNull($mockPager);
 
             return $this->getEmptyResultsObject();
@@ -76,7 +76,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
 
         $this->setMockMetadataServiceMethodsWithCallback($callbackToTestArguments);
 
-        $this->kalturaSideEntries->getMetadataForEntry('1_abcdefg');
+        $this->kalturaSideEntries->getMetadataForEntry($this->testEntryId);
     }
 
     public function testGetMetadataForEntryResults()
@@ -87,7 +87,7 @@ class KalturaSideEntriesTest extends \PHPUnit_Framework_TestCase
 
         $this->setMockMetadataServiceMethodsWithCallback($callbackToReturnMockMetadataForEntry);
 
-        $testMockMetadataResults = $this->kalturaSideEntries->getMetadataForEntry('1_abcdefg');
+        $testMockMetadataResults = $this->kalturaSideEntries->getMetadataForEntry($this->testEntryId);
 
         $this->assertXmlStringEqualsXmlString('<fakeEntry></fakeEntry>', $testMockMetadataResults);
     }
