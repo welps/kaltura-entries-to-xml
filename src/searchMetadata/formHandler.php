@@ -50,7 +50,7 @@ if (empty($_POST['select-metadata'])) {
 
 if (!empty($results)) {
     $kalturaSideEntries = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaSideEntries($kalturaServiceFactory);
-    $kaltura = new \wcheng\KalturaEntriesToXML\Models\XML\KalturaXML($kalturaSideEntries, $kalturaConfig['metadataProfileId']);
+    $kaltura = new \wcheng\KalturaEntriesToXML\Models\XML\KalturaXML($kalturaSideEntries, $kalturaConfig['metadataProfileId'], $kalturaConfig['xmlStorageLocation']);
     $kalturaFileOutput = $kaltura->getXML($results);
     $kalturaNumEntries = $kaltura->getNumEntries();
 

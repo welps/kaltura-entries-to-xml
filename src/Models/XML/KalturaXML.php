@@ -7,12 +7,14 @@ class KalturaXML
     protected $kalturaSideEntries;
     private $xmlFile;
     private $metadataProfileId;
+    private $xmlStorageLocation;
     private $mNumEntries = 0;
 
-    public function __construct(\wcheng\KalturaEntriesToXML\Models\Entries\KalturaSideEntries $kalturaSideEntries, $metadataProfileId)
+    public function __construct(\wcheng\KalturaEntriesToXML\Models\Entries\KalturaSideEntries $kalturaSideEntries, $metadataProfileId, $xmlStorageLocation)
     {
         $this->kalturaSideEntries = $kalturaSideEntries;
         $this->metadataProfileId = $metadataProfileId;
+        $this->xmlStorageLocation = $xmlStorageLocation;
     }
 
     public function getNumEntries()
@@ -107,7 +109,7 @@ class KalturaXML
     {
         $dateForFile = new \DateTime('now');
         $dateForFile = $dateForFile->format('Y-m-d-H-i-s');
-        $filename = 'export/kalturaexport' . $dateForFile . '.xml';
+        $filename = $this->xmlStorageLocation . $dateForFile . uniqid() . mt_rand() . '.xml';
 
         if (!file_exists($filename)) {
             touch($filename);
