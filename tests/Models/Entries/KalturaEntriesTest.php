@@ -38,7 +38,7 @@ class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
         $this->setGetAllMatchingEntriesToReturnFilterAndPager();
 
         // Real Kaltura Entries so we can test getAllMatchingEntries method
-        $this->kalturaEntries = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries($this->mockServiceFactory);       
+        $this->kalturaEntries = new \wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries($this->mockServiceFactory);
     }
 
     public function testGetEntriesByName()
@@ -93,23 +93,40 @@ class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllMatchingEntries()
     {
-        $results = new \stdClass;
-        $results->objects = array('Something to return');
-
-        $this->mockMediaService->expects($this->at(0))
-            ->method('listAction')
-            ->will($this->returnValue($results));
-
-        $emptyResults = new \stdClass;
-        $emptyResults->objects = array();
-
-        $this->mockMediaService->expects($this->at(1))
-            ->method('listAction')
-            ->will($this->returnValue($emptyResults));
+        $this->setMockMediaServiceMethodToReturnResults(0, $this->getMockResults());
+        $this->setMockMediaServiceMethodToReturnResults(1, $this->getEmptyResults());
 
         $resultsToTest = $this->kalturaEntries->getEntriesByName('Any search term');
 
         $this->assertEquals('Something to return', $resultsToTest->objects[0]);
+    }
+
+    public function testGetAllMatchingEntriesMerging()
+    {
+        $this->setMockMediaServiceMethodToReturnResults(0, $this->getMockResults());
+        $this->setMockMediaServiceMethodToReturnResults(1, $this->getMockResults());
+        $this->setMockMediaServiceMethodToReturnResults(2, $this->getEmptyResults());
+
+        $resultsToTest = $this->kalturaEntries->getEntriesByName('Any search term');
+
+        $this->assertEquals('Something to return', $resultsToTest->objects[0]);
+        $this->assertEquals('Something to return', $resultsToTest->objects[1]);
+    }
+
+    public function getMockResults()
+    {
+        $results = new \stdClass;
+        $results->objects = array('Something to return');
+
+        return $results;
+    }
+
+    public function getEmptyResults()
+    {
+        $emptyResults = new \stdClass;
+        $emptyResults->objects = array();
+
+        return $emptyResults;
     }
 
     public function setMockServiceFactory()
@@ -158,6 +175,13 @@ class KalturaEntriesTest extends \PHPUnit_Framework_TestCase
         $this->mockMediaService = $this->getMockBuilder('\Kaltura\Client\Service\MediaService')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    public function setMockMediaServiceMethodToReturnResults($iteration, $results)
+    {
+        $this->mockMediaService->expects($this->at($iteration))
+            ->method('listAction')
+            ->will($this->returnValue($results));
     }
 
     public function setMockFilter()
