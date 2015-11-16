@@ -8,7 +8,7 @@ class KalturaServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->config = parse_ini_file(dirname(__FILE__) . '/../../config-tests.ini');
+        $this->config = parse_ini_file(dirname(__FILE__) . '/../../../config-tests.ini');
         $this->kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\Models\ServiceFactory\KalturaServiceFactory($this->config);
     }
 
