@@ -3,6 +3,8 @@
         Options -MultiViews
     </IfModule>
 
+    RewriteEngine On
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
