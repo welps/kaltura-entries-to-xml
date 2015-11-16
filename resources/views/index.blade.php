@@ -3,6 +3,7 @@
 <title>Kaltura Metadata Search</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400,300' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="style.css">
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 <body>
 <div id="wrapper">
@@ -11,7 +12,7 @@
         <form id="kaltura-metadata-search">
             <label for="search-term">Search Term:</label>
             <input type="search" id="search-term" name="search-term" placeholder="Search term"/>
-            
+
             <label for="select-metadata">Metadata Field:</label>
             <span class="custom-dropdown">
                 <select name="select-metadata" id="select-metadata" class="custom-dropdown__select">
@@ -21,11 +22,11 @@
                 <option value="kaltura-category">Category ID</option>
                 </select>
             </span>
-            
+
             <input id="submit-button" type="submit" value="Search" />
-        
+
         </form>
-        
+
         <div class="alerts">
             <div class='alert alert-search-term'>
                 <p>Please enter a search term</p>
@@ -41,7 +42,7 @@
 
     </div>
 
-</div>    
+</div>
 
 <!-- Loading screen -->
 <div id="loading">
@@ -64,17 +65,22 @@
         </div>
     </div>
 </div>
-    
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 // Grab metadata fields and populate form
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'getMetadataFields.php',
+        url: 'getMetadataFields',
         success: function (data){
             for (var i = 0; i < data.metadataFields.length; i++){
                 var metadataField = data.metadataFields[i];
@@ -105,7 +111,7 @@ $('#kaltura-metadata-search').submit(function(){
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: 'formHandler.php',
+        url: 'getEntries',
         data: $(this).serialize(),
         dataType: 'json',
         success: function (data){
