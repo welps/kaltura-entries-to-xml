@@ -14,15 +14,15 @@ use \Kaltura\Client\Type\FilterPager as KalturaFilterPager;
 use \Kaltura\Client\Type\MediaEntryFilter as KalturaMediaEntryFilter;
 use \Kaltura\Client\Type\SearchCondition as KalturaSearchCondition;
 
-class KalturaServiceFactory implements ServiceFactory
+class KalturaServiceFactory implements \wcheng\KalturaEntriesToXML\Models\ServiceFactory\ServiceFactory
 {
     private $kalturaConfig;
     private $isAdmin = true;
     private $kalturaClient;
 
-    public function __construct($kalturaConfigLocation)
+    public function __construct($kalturaConfig)
     {
-        $this->kalturaConfig = parse_ini_file($kalturaConfigLocation);
+        $this->kalturaConfig = $kalturaConfig;
     }
 
     public function getKalturaClient()
