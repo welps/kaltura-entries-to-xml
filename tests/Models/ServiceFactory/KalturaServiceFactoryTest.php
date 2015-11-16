@@ -4,12 +4,12 @@ namespace wcheng\KalturaEntriesToXML\Models\ServiceFactory;
 class KalturaServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected $kalturaServiceFactory;
-    protected $configLocation;
+    protected $config;
 
     protected function setUp()
     {
-        $this->configLocation = dirname(__FILE__) . '/../../config-tests.ini';
-        $this->kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\Models\ServiceFactory\KalturaServiceFactory($this->configLocation);
+        $this->config = parse_ini_file(dirname(__FILE__) . '/../../config-tests.ini');
+        $this->kalturaServiceFactory = new \wcheng\KalturaEntriesToXML\Models\ServiceFactory\KalturaServiceFactory($this->config);
     }
 
     public function testGetKalturaClient()
