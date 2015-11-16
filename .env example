@@ -1,0 +1,14 @@
+APP_ENV=local
+APP_DEBUG=true
+APP_KEY=SomeRandomString
+
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_DRIVER=sync
+
+serviceUrl = http://www.kaltura.com
+partnerId = 
+adminSecret = 
+userId = 
+metadataProfileId =
+xmlStorageLocation = export/

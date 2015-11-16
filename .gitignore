@@ -1,3 +1,9 @@
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
+
 config.ini
 /vendor/
 /src/searchMetadata/export/
