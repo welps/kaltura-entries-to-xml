@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "598b955445c7c68a8e3a1728dcf6613c",
-    "content-hash": "5759f96a56fb932212eaf3d189954a28",
+    "hash": "e8abe596359e71c7aef1ef7b455db466",
+    "content-hash": "0ed204f45954c92025f926745ca9ded4",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2017,22 +2017,22 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "0.9.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "70bba85e4aabc9449626651f48b9018ede04f86b"
+                "reference": "ee88cd05073533b10678772fe954d042748393c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/70bba85e4aabc9449626651f48b9018ede04f86b",
-                "reference": "70bba85e4aabc9449626651f48b9018ede04f86b",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/ee88cd05073533b10678772fe954d042748393c3",
+                "reference": "ee88cd05073533b10678772fe954d042748393c3",
                 "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "~1.1",
                 "lib-pcre": ">=7.0",
-                "php": ">=5.3.2"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -2040,7 +2040,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.9.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -2078,7 +2078,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2015-04-02 19:54:00"
+            "time": "2015-10-12 06:21:09"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3304,6 +3304,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "kaltura/api-client-library": 20,
+        "mockery/mockery": 20,
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": true,
