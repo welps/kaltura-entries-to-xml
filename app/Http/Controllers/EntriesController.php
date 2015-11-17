@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use wcheng\KalturaEntriesToXML\Models\Entries\KalturaEntries;
-use wcheng\KalturaEntriesToXML\Models\Entries\KalturaSideEntries;
 use wcheng\KalturaEntriesToXML\Models\XML\KalturaXML;
 
 class EntriesController extends Controller
 {
-    public function getXMLEntries(Request $request, KalturaEntries $kalturaEntries, KalturaSideEntries $kalturaSideEntries, KalturaXML $kalturaXML)
+    public function getXMLEntries(Request $request, KalturaEntries $kalturaEntries, KalturaXML $kalturaXML)
     {
         // Data to be returned to form via ajax
         $return = array();
