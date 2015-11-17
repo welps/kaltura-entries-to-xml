@@ -17,8 +17,8 @@ class EntriesController extends Controller
         $return['hasSelectMetadata'] = true;
         $return['message'] = '';
 
-        $searchTerm = $request->input('search-term');
-        $searchCategory = $request->input('select-metadata');
+        $searchTerm = htmlentities($request->input('search-term'));
+        $searchCategory = htmlentities($request->input('select-metadata'));
 
         if (!empty($searchTerm) && !empty($searchCategory)) {
 

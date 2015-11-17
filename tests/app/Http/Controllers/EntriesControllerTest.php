@@ -39,7 +39,13 @@ class EntriesControllerTest extends TestCase
         $response = $this->postToGetEntries('Freedom', 'kaltura-metadata-search');
         $this->assertContains('Freedom', $response->original);
     }
-
+    
+    public function testGetXMLEntriesXSS()
+    {
+        $this->setKalturaGetNumEntries(20);
+        $response = $this->postToGetEntries('<strong> &nbsp; hello', 'kaltura-metadata-search');
+        $this->assertContains('&lt;strong&gt; &amp;nbsp; hello', $response->original);
+    }
     public function testGetXMLEntriesWithNoResults()
     {
         $this->setKalturaGetNumEntries(0);
